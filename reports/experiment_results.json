@@ -1,0 +1,69 @@
+{
+  "experiment_2_text_layer_vs_ocr": {
+    "ground_truth_word_count": 38,
+    "text_layer": {
+      "word_count": 38,
+      "time_ms": 4.955832991981879,
+      "text_match_ratio_pct": 100.0
+    },
+    "ocr": {
+      "word_count": 5,
+      "time_ms": 2690.531458996702,
+      "text_match_ratio_pct": 100.0,
+      "mean_confidence_pct": 81.36864423338614
+    },
+    "speedup_text_layer_over_ocr": 542.901962868756
+  },
+  "experiment_1_caching_latency": {
+    "n_taps": 10,
+    "old_total_ms": 25938.258707989007,
+    "new_total_ms": 2690.614375984296,
+    "new_upload_cost_ms": 2690.531458996702,
+    "new_per_tap_ms": 0.008291698759421706,
+    "old_per_tap_ms": 2593.8258707989007
+  },
+  "experiment_3_qualitative_taps": [
+    {
+      "tap_label": "early word",
+      "tap_xy": [
+        60,
+        60
+      ],
+      "selected_text": "drives this reaction.",
+      "ranked_context": [
+        "drives this reaction.",
+        "convert sunlight into chemical energy. This energy is",
+        "repair. Chlorophyll inside the leaf absorbs light energy and",
+        "stored in glucose molecules and used later for growth and"
+      ]
+    },
+    {
+      "tap_label": "mid paragraph",
+      "tap_xy": [
+        250,
+        170
+      ],
+      "selected_text": "convert sunlight into chemical energy. This energy is",
+      "ranked_context": [
+        "convert sunlight into chemical energy. This energy is",
+        "Photosynthesis is the process by which green plants",
+        "stored in glucose molecules and used later for growth and",
+        "repair. Chlorophyll inside the leaf absorbs light energy and"
+      ]
+    },
+    {
+      "tap_label": "late word",
+      "tap_xy": [
+        400,
+        280
+      ],
+      "selected_text": "repair. Chlorophyll inside the leaf absorbs light energy and",
+      "ranked_context": [
+        "repair. Chlorophyll inside the leaf absorbs light energy and",
+        "stored in glucose molecules and used later for growth and",
+        "convert sunlight into chemical energy. This energy is",
+        "Photosynthesis is the process by which green plants"
+      ]
+    }
+  ]
+}

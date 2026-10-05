@@ -5,14 +5,27 @@ from google import genai
 
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
+_client = None
 
-if not api_key:
-    raise RuntimeError(
-        "GEMINI_API_KEY is missing from .env"
-    )
 
-client = genai.Client(api_key=api_key)
+class ExplanationServiceUnavailable(RuntimeError):
+    pass
+
+
+def _get_client():
+    global _client
+
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+
+        if not api_key:
+            raise ExplanationServiceUnavailable(
+                "GEMINI_API_KEY is missing from .env"
+            )
+
+        _client = genai.Client(api_key=api_key)
+
+    return _client
 
 
 def generate_explanation(
@@ -22,6 +35,8 @@ def generate_explanation(
     """
     Generate an educational explanation using Gemini.
     """
+
+    client = _get_client()
 
     context_text = "\n".join(
         item["text"]

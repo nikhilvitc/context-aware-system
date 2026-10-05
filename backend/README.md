@@ -6,10 +6,11 @@ CPU-friendly first version of the Tap2Explain backend.
 
 - FastAPI API
 - CPU-only EasyOCR
-- Image upload
-- OCR text + bounding boxes
+- Image and PDF upload (multi-page)
+- OCR text + bounding boxes, or native PDF text-layer extraction when available
+- Per-document/page result caching (OCR/text-layer only runs once per page)
 - Tap-coordinate based context selection
-- Placeholder explanation service
+- Gemini-backed explanation service
 
 ## Setup
 
@@ -49,25 +50,41 @@ Returns:
 
     {"status": "ok"}
 
-### POST /api/image
+### POST /api/document
 
-Upload a JPG or PNG image. The endpoint returns an image ID and OCR results.
+Upload a JPG, PNG, or PDF file (multipart field `file`). Returns a
+`document_id`, `doc_type` (`image` or `pdf`), `page_count`, and per-page OCR
+(or native PDF text-layer) results with bounding boxes. Results are cached
+in memory per document/page.
+
+### GET /api/document/{document_id}/page/{page_number}
+
+Returns the rendered page as a PNG/JPEG, so the frontend can display PDF
+pages without doing any PDF rendering itself.
 
 ### POST /api/context
 
 Send:
 
     {
-      "image_id": "...",
+      "document_id": "...",
+      "page": 0,
       "x": 420,
       "y": 280
     }
 
-The endpoint identifies the tapped OCR item and returns nearby OCR context.
+The endpoint identifies the tapped OCR/text item on that page and returns
+nearby context, using the cached results (no re-parsing the file).
+
+### POST /api/explain
+
+Same request shape as `/api/context`. Returns the selected text, its
+context, and a Gemini-generated explanation.
 
 ## Next steps
 
-1. Cache OCR results instead of running OCR again.
+1. Persist the document cache (currently in-memory, lost on restart).
 2. Add image cropping around the tapped region.
-3. Add the VLM/LLM explanation endpoint.
-4. Connect the frontend.
+3. Support `.docx` — likely via a text-only mode (no spatial layout) rather
+   than full page rendering, since that needs a conversion dependency like
+   LibreOffice.
