@@ -29,7 +29,25 @@ export function documentPageUrl(documentId, pageNumber) {
   return `${API_BASE}/api/document/${documentId}/page/${pageNumber}`;
 }
 
-export async function getContext(documentId, page, x, y) {
+export async function listRhymes() {
+  const response = await fetch(`${API_BASE}/api/rhymes`);
+  if (!response.ok) {
+    throw new Error(await parseErrorDetail(response));
+  }
+  return response.json();
+}
+
+export async function openRhyme(rhymeId) {
+  const response = await fetch(`${API_BASE}/api/rhymes/${rhymeId}/open`, {
+    method: "POST",
+  });
+  if (!response.ok) {
+    throw new Error(await parseErrorDetail(response));
+  }
+  return response.json();
+}
+
+export async function getContext(documentId, page, x, y, mode = "default") {
   const response = await fetch(`${API_BASE}/api/context`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -38,6 +56,7 @@ export async function getContext(documentId, page, x, y) {
       page,
       x: Math.round(x),
       y: Math.round(y),
+      mode,
     }),
   });
 
@@ -48,7 +67,7 @@ export async function getContext(documentId, page, x, y) {
   return response.json();
 }
 
-export async function getExplanation(documentId, page, x, y) {
+export async function getExplanation(documentId, page, x, y, mode = "default") {
   const response = await fetch(`${API_BASE}/api/explain`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -57,6 +76,7 @@ export async function getExplanation(documentId, page, x, y) {
       page,
       x: Math.round(x),
       y: Math.round(y),
+      mode,
     }),
   });
 

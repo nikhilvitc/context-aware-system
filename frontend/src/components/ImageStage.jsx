@@ -21,6 +21,7 @@ function sameBox(a, b) {
 export default function ImageStage({
   imageUrl,
   ocrResults,
+  objects = [],
   selection,
   showRelations,
   clickPoint,
@@ -76,6 +77,17 @@ export default function ImageStage({
 
               return (
                 <polygon key={idx} className={className} points={bboxToPoints(item.bbox)} />
+              );
+            })}
+
+            {objects.map((obj, idx) => {
+              const isSelected = selectedBbox && sameBox(obj.bbox, selectedBbox);
+              return (
+                <polygon
+                  key={`obj-${idx}`}
+                  className={isSelected ? "ocr-box selected object-box" : "ocr-box object-box"}
+                  points={bboxToPoints(obj.bbox)}
+                />
               );
             })}
 

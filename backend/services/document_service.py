@@ -47,10 +47,18 @@ class DocumentStore:
                     "height": height,
                     "source": "ocr",
                     "results": results,
+                    "objects": [],
                 }
             ],
         }
 
+        self._documents[document_id] = document
+        return document
+
+    def register_document(self, document_id: str, document: dict) -> dict:
+        """Register a pre-built document (e.g. rhyme page from research DB)."""
+        for page in document.get("pages", []):
+            page.setdefault("objects", [])
         self._documents[document_id] = document
         return document
 
@@ -96,6 +104,7 @@ class DocumentStore:
                     "height": pixmap.height,
                     "source": source,
                     "results": results,
+                    "objects": [],
                 }
             )
 

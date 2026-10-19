@@ -27,6 +27,14 @@ build/
 # ── Uploaded files ─────────────────────────────────────────────────────────────
 backend/uploads/
 
+# ── RhymeTextVQA data / research artifacts ─────────────────────────────────────
+data/pages/
+data/exports/
+data/rhyme_textvqa.db
+research/checkpoints/
+*.pt
+*.pth
+
 # ── EasyOCR / torch model cache ───────────────────────────────────────────────
 .EasyOCR/
 ~/.EasyOCR/
